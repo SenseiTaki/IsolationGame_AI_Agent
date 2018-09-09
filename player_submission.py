@@ -31,6 +31,8 @@ class OpenMoveEvalFn:
             """
 
         # TODO: finish this function!
+        return len(game.get_legal_moves()) - len(game.get_opponent_moves())
+
         raise NotImplementedError
 
 
@@ -116,8 +118,54 @@ class CustomPlayer:
             (tuple, int): best_move, val
         """
         # TODO: finish this function!
-        raise NotImplementedError
-        return best_move, best_val
+        best_move = (0, 0)
+        best_val = float('-inf')
+
+        if not game.get_legal_moves():
+            return best_move, best_val
+
+        for i in game.get_legal_moves():
+            best_val, best_move = max((best_val, best_move),
+                                      (self.min_value(game.forecast_move(i), depth - 1, best_move), i))
+            raise NotImplementedError
+            return best_move, best_val
+
+    # Maximizing player strategy
+    def max_value(self, game, depth, last_best_move):
+        #    if self.time_left() < TimeLimit
+        #        Raise last_best_move
+
+        # Terminal situation: depth = 0 or illegal move
+        if depth == 0 or not game.get_legal_moves():
+            return self.utility(game, maximizing_player=True)
+
+        # Normal situation: find the maximizing value
+        score_options = [self.min_value(game.forecast_move(i), depth - 1, last_best_move)
+                         for i in game.get_legal_moves()]
+        best_score = max(score_options) if score_options else float('-inf')
+
+        return best_score
+
+    # Minimizing player strategy
+    def min_value(self, game, depth, last_best_move):
+        #    if self.time_left() < TimeLimit
+        #        Raise last_best_move
+
+        # Terminal situation: depth = 0 or illegal move
+        if depth == 0 or not game.get_legal_moves():
+            return self.utility(game, maximizing_player=False)
+
+        # Normal situation: find the minimizing value
+        score_options = [self.max_value(game.forecast_move(i), depth - 1, last_best_move)
+                         for i in game.get_legal_moves()]
+        best_score = min(score_options) if score_options else float('-inf')
+
+        return best_score
+
+
+
+
+
 
     def alphabeta(self, game, time_left, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implementation of the alphabeta algorithm

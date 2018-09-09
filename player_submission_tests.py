@@ -10,6 +10,7 @@ from time import time, sleep
 
 def main():
 
+    """
     print ""
     try:
         sample_board = Board(RandomPlayer(), RandomPlayer())
@@ -35,6 +36,8 @@ def main():
         print 'OpenMoveEvalFn Test: ERROR OCCURRED'
         print traceback.format_exc()
 
+    """
+
     print ""
     try:
         """Example test to make sure
@@ -45,8 +48,8 @@ def main():
     	Especially important to check alphabeta 
     	pruning"""
         # create dummy 5x5 board
-        b = Board(RandomPlayer(), HumanPlayer(), 5, 5)
-	
+        b = Board(RandomPlayer(), CustomPlayer(4), 5, 5)
+
         b.__board_state__ = [
             [" ", " " , " ", " ", " "],
             [" ", " ",  " ", " ", " "],
